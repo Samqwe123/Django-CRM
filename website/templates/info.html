@@ -5,9 +5,22 @@
 
 {% if customer_info.info %}
     <p>{{ customer_info.info }}</p>
+    {% for item in customer_info.items.all %}
+    <p>Item Name: {{ item.name }}</p>
+    <p>Description: {{ item.description }}</p>
+
+    <br/><br/>
+
+    <a href="{% url 'give_items' customer_info.id  %}" class="btn btn-secondary">Give Item
+    </a>
+    <a href="{% url 'home' %}" class="btn btn-secondary">return
+    </a>
+{% endfor %}
+
 {% else %}
     <p>This user has nothing to say...</p>
+    <a href="{% url 'home' %}" class="btn btn-secondary">return
+    </a>
 {% endif %}
-
 
 {%endblock%}

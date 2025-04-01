@@ -110,6 +110,19 @@ def show_record_info(request , pk):
      if request.user.is_authenticated:
         customer_info = Record.objects.get(id=pk)
         return render(request, 'info.html', {'customer_info':customer_info})
+     else:
+        messages.success(request, "logged in and viewing the page")
+        return redirect('home')
+     
+
+     
+def give_items(request,pk):
+    if request.user.is_authenticated:
+        giver = Record.objects.get(id=pk)
+
+        available_customers = Record.objects.exclude(id=giver.id)
+        return render(request, 'give_items.html' , {'available_customers':available_customers})
+    
 
 
     
