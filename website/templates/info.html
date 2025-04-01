@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{ customer_info.first_name }}'s Info</h1>
+
+
+{% if customer_info.info %}
+    <p>{{ customer_info.info }}</p>
+{% else %}
+    <p>This user has nothing to say...</p>
+{% endif %}
+
+
+{%endblock%}

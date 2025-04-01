@@ -5,6 +5,7 @@ from .forms import SignUpForm , AddRecordForm
 from .models import Record
 
 
+
 # Create your views here.
 
 def home(request):
@@ -45,6 +46,7 @@ def register_user(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user = authenticate(username=username , password = password)
+
             login(request , user)
             messages.success (request , "You have successfully registered  ")
             return redirect('home')
@@ -59,7 +61,7 @@ def register_user(request):
 def customer_record(request , pk):
     if request.user.is_authenticated:
         customer_record = Record.objects.get(id=pk)
-        return render(request, 'record.html', {'customer_record':customer_record})   
+        return render(request, 'record.html', {'customer_record':customer_record}) 
     else:
         messages.success(request, "logged in and viewing the page")
         return redirect('home')
@@ -103,6 +105,11 @@ def update_record(request , pk):
     else:
         messages.success(request,"You must be logged in.")
         return redirect('home')
+    
+def show_record_info(request , pk):
+     if request.user.is_authenticated:
+        customer_info = Record.objects.get(id=pk)
+        return render(request, 'info.html', {'customer_info':customer_info})
 
 
     
