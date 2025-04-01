@@ -2,7 +2,7 @@ from django.shortcuts import render , redirect
 from django.contrib.auth import authenticate , login , logout
 from django.contrib import messages
 from .forms import SignUpForm , AddRecordForm
-from .models import Record
+from .models import Record , Item
 
 
 
@@ -120,8 +120,33 @@ def give_items(request,pk):
     if request.user.is_authenticated:
         giver = Record.objects.get(id=pk)
 
-        available_customers = Record.objects.exclude(id=giver.id)
-        return render(request, 'give_items.html' , {'available_customers':available_customers})
+        if request.method == "POST":
+            item_id=request.POST.get("item_id")
+            available_customers = Record.objects.exclude(id=giver.id)
+            return render(request, 'give_items.html' , {'available_customers':available_customers, "item_id":item_id})
+        
+    return redirect("home")
+
+def process_give(request):
+    if request.user.is_authenticated and request.method == "POST":
+        recipient_id = request.POST.get("recipient_id")
+        item_id = request.POST.get("item_id")
+
+        if recipient_id and item_id:
+            recipient = Record.objects.get(id=recipient_id)
+            item = Item.objects.get(id=item_id)
+            item.record = recipient
+            item.save()
+
+        messages.success(request, "Item successfully given!")
+        return redirect("home")
+
+    return redirect("home")
+            
+            
+
+
+       
     
 
 

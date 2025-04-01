@@ -19,7 +19,12 @@
                 <td>{{ customer.last_name }}</td>
                 <td>{{ customer.email }}</td>
                 <td>
-                    <a href="{% url 'show_record_info' customer.id %}" class="btn btn-info">View Info</a>
+                    <form action="{% url 'process_give' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="recipient_id" value="{{ customer.id }}">
+                        <input type="hidden" name="item_id" value="{{ item_id }}">
+                        <button type="submit" class="btn btn-info">Give</button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}

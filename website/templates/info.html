@@ -2,25 +2,32 @@
 {% block content %}
 <h1>{{ customer_info.first_name }}'s Info</h1>
 
-
 {% if customer_info.info %}
-    <p>{{ customer_info.info }}</p>
-    {% for item in customer_info.items.all %}
-    <p>Item Name: {{ item.name }}</p>
-    <p>Description: {{ item.description }}</p>
-
-    <br/><br/>
-
-    <a href="{% url 'give_items' customer_info.id  %}" class="btn btn-secondary">Give Item
-    </a>
-    <a href="{% url 'home' %}" class="btn btn-secondary">return
-    </a>
-{% endfor %}
-
+    <p>: {{customer_info.info}}</p>
 {% else %}
-    <p>This user has nothing to say...</p>
-    <a href="{% url 'home' %}" class="btn btn-secondary">return
-    </a>
+    <p>This user has nothing to introduce..</p>
 {% endif %}
 
-{%endblock%}
+
+{% if customer_info.items.all %}
+    <form action="{% url 'give_items' customer_info.id %}" method="POST">
+        {% csrf_token %}
+        <label for="item">Select Item to Give:</label>
+        <select name="item_id" id="item">
+            {% for item in customer_info.items.all %}
+                <option value="{{ item.id }}">{{ item.name }} - {{ item.description }}</option>
+            {% endfor %}
+        </select>
+        <br/><br/>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Return</a>
+        <button type="submit" class="btn btn-secondary">Next</button>
+    
+    </form>
+{% else %}
+    <p>This user has no items to give.</p>
+    <br/>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Return</a>
+{% endif %}
+
+
+{% endblock %}
