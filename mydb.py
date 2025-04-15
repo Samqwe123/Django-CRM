@@ -18,3 +18,5 @@ print("Database samdb has been recreated successfully!")
 # Close the connection
 cursorObject.close()
 dataBase.close()
+
+#Test123
